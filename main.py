@@ -2,27 +2,29 @@ import pygame
 from game import Game
 #à faire
 #faire setter et getter de sizeH et sizeV
-def readline(game):
+#cree rectangle de la bonne taille
+#cree un rectangle pour toute les cases
+def parseFile(gm):
 	file = open('maps/map1.td', "r")
 	line = file.readline()
 	split_string = line.split(" ")
 	while line:
 		if split_string[0] == "R":
-			game.setWidth(int(split_string[1]))
-			game.setHeight(int(split_string[2]))
-		#elif split_string[0] == "SH":
-		#	game.setSizeH()
+			gm.setWidth(int(split_string[1]))
+			gm.setHeight(int(split_string[2]))
+		elif split_string[0] == "SH":
+			gm.setSizeH(int(split_string[1]))
+		elif split_string[0] == "SV":
+			gm.setSizeV(int(split_string[1]))
 		line = file.readline()
 		split_string = line.split(" ")
 
-	print (game.getWidth(), game.getWidth())
 	file.close()
-	return game
 
 if __name__ == "__main__":
 	# The background color can be whatever you want
 	gm = Game()
-	readline(gm)
+	parseFile(gm)
 	background_colour = (255,0,0)
 	print (gm.getWidth(), gm.getHeight())
 	screen = pygame.display.set_mode((gm.getWidth(), gm.getHeight()))
@@ -32,7 +34,9 @@ if __name__ == "__main__":
 	pygame.display.flip()
 	running = True
 	BLUE=(0,0,255)
-	pygame.draw.rect(screen, BLUE,(200,150,100,50))
+	coteH = (gm.width/gm.SizeH)
+	coteV = (gm.height/gm.SizeV)
+	pygame.draw.rect(screen, BLUE,(200,150,coteH,coteV))
 
 	while running:
 		for event in pygame.event.get():
