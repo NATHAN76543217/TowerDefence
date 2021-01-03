@@ -5,7 +5,7 @@ if __name__ == "__main__":
 	(width, height) = (300, 200)
 	background_colour = (0,255,255)
 	screen = pygame.display.set_mode((width, height))
-	
+	# coucou
 	pygame.display.set_caption('Tower defence')
 	screen.fill(background_colour)
 	pygame.display.flip()
