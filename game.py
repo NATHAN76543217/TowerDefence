@@ -6,6 +6,8 @@ class Game():
 		self.running = True
 		self.width = 0
 		self.height = 0
+		self.SizeH = 0
+		self.SizeV = 0
 		return
 	
 	def setWidth(self, width):
@@ -31,3 +33,12 @@ class Game():
 				elif event.key == pygame.K_g:
 					self.screen.fill((255, 255, 0))
 		
+	def setSizeH(self, SizeH):
+		self.SizeH = SizeH
+	def setSizeV(self, SizeV):
+		self.SizeV = SizeV
+
+	def getSizeH(self):
+		return self.SizeH
+	def getSizeV(self):
+		return self.SizeV
