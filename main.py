@@ -1,18 +1,34 @@
 import pygame
 from game import Game
+from ennemy import Ennemy
+
 #à faire
 #faire setter et getter de nbCaseH et nbCaseV
 #cree rectangle de la bonne taille
 #cree un rectangle pour toute les cases
+def loadWave(gm, file):
+	waves = []
+	split = file.readline().split(" ")
+	dic = {}
+	for op in split[1:]:
+		op = op.split(":")
+		dic[op[0]] = int(op[1])
+	waves.append(dic)
+	return waves
+
 def loadMap(gm, file):
 	i = gm.getnbCaseV()
 	my_map = []
-	print("map = " + str(my_map))
 	while (i > 0):
 		line = file.readline()
-		my_map.append([char for char in line])
+		my_map.append([char for char in line[:-1]])
 		i -= 1
-	print("map = " + str(my_map))
+	for y, line in enumerate(my_map):
+		for x, char in enumerate(line):
+			if char == "S":
+				gm.setSponePoint((x,y))
+			elif (char == "E"):
+				gm.setEndPoint((x, y))
 	return my_map
 
 def parseFile(gm):
@@ -24,11 +40,13 @@ def parseFile(gm):
 			gm.setWidth(int(split_string[1]))
 			gm.setHeight(int(split_string[2]))
 		elif split_string[0] == "SH":
-			gm.setnbCaseH(int(split_string[1]))
+			gm.setnbCaseH(int(split_string[1]) - 1)
 		elif split_string[0] == "SV":
 			gm.setnbCaseV(int(split_string[1]))
 		elif split_string[0] == "MAP":
 			gm.setMap(loadMap(gm, file))
+		elif split_string[0] == "WAVE":
+			gm.setWaves(loadWave(gm, file))
 		line = file.readline()
 		split_string = line.split(" ")
 	if (gm.getWidth() == 0 or gm.getHeight() == 0):
@@ -39,16 +57,16 @@ def parseFile(gm):
 	file.close()
 
 if __name__ == "__main__":
-	# The background color can be whatever you want
+	pygame.init()
 	gm = Game()
 	parseFile(gm)
 	gm.setScreen() 
 	pygame.display.set_caption('Tower defense')
 
-	gm.screen.fill(gm.RED)
+	gm.screen.fill(gm.BLACK)
 	pygame.display.flip()
-	print("MAP")
-	print(gm.map)
+	gm.generateEnnemies()
+	print(gm)
 	while gm.running:
 		gm.handleEvents()
 		gm.updateMap()
